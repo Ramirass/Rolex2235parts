@@ -109,6 +109,43 @@
   .tcell{width:46px;padding:4px 6px !important}
   .tcell img{width:38px;height:38px;object-fit:contain;background:#fff;
     border:1px solid #d9d2c4;border-radius:3px;display:block}
+  /* ── Цены ── */
+  .price{display:flex;gap:10px;align-items:baseline;margin-top:4px;
+    font:12px var(--mono);letter-spacing:.02em}
+  .pg{color:#20261f;font-weight:600}
+  .po{color:#8a6d3b}
+  .price .lbl{color:#9a9384;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+  .price .vtag{color:#00693c;font-weight:700;min-width:34px}
+  .tprice{white-space:nowrap;font:12px var(--mono)}
+  .tprice .po{margin-left:8px}
+  .add{margin-top:6px;border:1px solid #cfc7b6;background:#fff;border-radius:3px;
+    font:11px var(--mono);color:#4a463d;padding:3px 9px;cursor:pointer}
+  .add:hover{background:#f2eee3}
+  .add.on{background:#20261f;color:#f6f2e8;border-color:#20261f}
+  /* смета */
+  #est{position:fixed;right:16px;bottom:16px;z-index:40;width:330px;max-height:70vh;
+    display:none;flex-direction:column;background:#fbf8f0;border:1px solid #cfc7b6;
+    border-radius:5px;box-shadow:0 8px 28px rgba(32,38,31,.22);font:12px var(--mono)}
+  #est.open{display:flex}
+  #est h4{margin:0;padding:10px 12px;border-bottom:1px solid #e2dccd;font-size:12px;
+    text-transform:uppercase;letter-spacing:.1em;color:#4a463d;display:flex;
+    justify-content:space-between;align-items:center}
+  #est h4 button{border:0;background:none;font-size:16px;cursor:pointer;color:#8a8474;line-height:1}
+  #estBody{overflow:auto;padding:6px 12px;flex:1}
+  .eline{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;
+    padding:5px 0;border-bottom:1px dotted #e2dccd}
+  .eline .en{color:#20261f}
+  .eline .em{color:#9a9384;font-size:10px}
+  .qbtn{border:1px solid #cfc7b6;background:#fff;width:20px;height:20px;
+    border-radius:3px;cursor:pointer;line-height:1;color:#4a463d}
+  #estFoot{border-top:1px solid #e2dccd;padding:10px 12px;display:flex;
+    flex-direction:column;gap:8px}
+  #estFoot .tot{display:flex;justify-content:space-between;font-weight:600}
+  #estFoot button{border:1px solid #cfc7b6;background:#fff;border-radius:3px;
+    padding:6px;cursor:pointer;font:11px var(--mono);color:#4a463d}
+  #estToggle{position:fixed;right:16px;bottom:16px;z-index:39;border:1px solid #cfc7b6;
+    background:#fbf8f0;border-radius:5px;padding:9px 14px;cursor:pointer;
+    font:12px var(--mono);color:#4a463d;box-shadow:0 4px 14px rgba(32,38,31,.15)}
   /* ── Лайтбокс ── */
   #lightbox{position:fixed;inset:0;z-index:50;display:none;background:rgba(32,38,31,.82);
     align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
@@ -288,7 +325,7 @@
 
 </main>
 <footer style="max-width:980px;margin:24px auto 0;padding:0 20px 40px;font:12px var(--mono);color:#7c766a">
-Источники: Rolex Fournitures SAV, Calibres 2230 / 2235 (10.10.2006) · Rolex Technical Information No. 55 (июнь 1999) · Фото деталей: evergreenparts.de (generic-аналоги).<br>
+Источники: Rolex Fournitures SAV, Calibres 2230 / 2235 (10.10.2006) · Rolex Technical Information No. 55 (июнь 1999) · Фото и цены деталей: evergreenparts.de (аналоги / оригинал, без НДС и доставки).<br>
 Данные калибров 2230/2235 не смешиваются с материалами 3135. Материалы курса Романа.
 </footer>
 <script>
@@ -462,7 +499,179 @@
     };
     a.src = 'img/'+ref+'.jpg';
   });
+  const PRICES = {
+    '167':{g:6.9,o:60.0},
+    '2130-0913':{g:null,o:175.0},
+    '2130-0913-2':{g:7.5,o:null},
+    '2130-0915-1':{g:29.0,o:null},
+    '2130-419':{g:13.0,o:null},
+    '2130-425':{g:null,o:45.0},
+    '2130-5100':{g:6.3,o:60.0},
+    '2130-9330':{g:10.0,o:null},
+    '2230-105':{g:80.0,o:500.0},
+    '2230-110':{g:null,o:600.0},
+    '2230-201':{g:4.5,o:75.0},
+    '2230-204':{g:10.0,o:null},
+    '2230-205':{g:10.0,o:null},
+    '2230-209':{g:null,o:15.0},
+    '2230-210':{g:22.0,o:null},
+    '2230-211':{g:13.0,o:null},
+    '2230-213':{g:17.0,o:null},
+    '2230-220':{g:44.0,o:null},
+    '2230-231':{g:43.0,o:null},
+    '2230-241':{g:10.0,o:null},
+    '2230-249':{g:13.0,o:35.0},
+    '2230-250':{g:19.0,o:null},
+    '2230-301':{g:11.0,o:null},
+    '2230-305':{g:41.0,o:55.0},
+    '2230-307':{g:18.0,o:null},
+    '2230-311':{g:9.0,o:45.0},
+    '2230-330':{g:39.0,o:50.0},
+    '2230-340':{g:39.0,o:60.0},
+    '2230-360':{g:42.0,o:null},
+    '2230-410':{g:64.0,o:null},
+    '2230-421':{g:96.0,o:null},
+    '2230-429':{g:17.0,o:null},
+    '2230-432':{g:null,o:650.0},
+    '2230-510':{g:44.0,o:null},
+    '2230-5110':{g:6.3,o:60.0},
+    '2230-5115':{g:6.3,o:60.0},
+    '2230-5210':{g:7.5,o:null},
+    '2230-5300':{g:6.3,o:null},
+    '2230-5305':{g:6.3,o:null},
+    '2230-540':{g:92.0,o:null},
+    '2230-550':{g:22.0,o:null},
+    '2230-560-1':{g:10.0,o:null},
+    '2230-570-1':{g:null,o:260.0},
+    '2230-9511':{g:13.0,o:null},
+    '2230-9570':{g:10.0,o:null},
+    '2230-975':{g:null,o:170.0},
+    '4493':{g:4.1,o:50.0},
+    '4494':{g:12.0,o:100.0}
+  };
+  const PVAR = {
+    '2230-204':{g:16.0,o:null},
+    '2230-205':{g:null,o:60.0},
+    '2230-220':{g:42.0,o:100.0},
+    '2230-231':{g:54.0,o:null},
+    '2230-260':{g:32.0,o:50.0},
+    '2230-270':{g:29.0,o:null},
+    '2230-360':{g:42.0,o:60.0}
+  };
+
+  const fmt = v => v==null ? '—' : v.toFixed(2).replace('.',',')+' €';
+  const NAMES = {}, CART = {};
+
+  function line(p, tag){
+    let s = '<div class="price">';
+    if(tag) s += '<span class="lbl vtag">'+tag+'</span>';
+    if(p.g!=null) s += '<span class="pg">'+fmt(p.g)+'</span><span class="lbl">аналог</span>';
+    if(p.o!=null) s += '<span class="po">'+fmt(p.o)+'</span><span class="lbl">ориг.</span>';
+    return s + '</div>';
+  }
+  function priceHTML(ref){
+    let s = '';
+    if(PRICES[ref]) s += line(PRICES[ref], PVAR[ref] ? '2230' : '');
+    if(PVAR[ref])  s += line(PVAR[ref], '2235');
+    return s;
+  }
+
+  // карточки
+  document.querySelectorAll('.part[data-ref]').forEach(card=>{
+    const ref = card.dataset.ref.split('/')[0];
+    NAMES[ref] = card.querySelector('.ru').textContent.split(';')[0].trim();
+    if(!PRICES[ref] && !PVAR[ref]) return;
+    const names = card.querySelector('.names');
+    names.insertAdjacentHTML('beforeend', priceHTML(ref));
+    const b = document.createElement('button');
+    b.className = 'add'; b.textContent = '+ в смету';
+    b.onclick = ()=>{ addItem(ref); };
+    names.appendChild(b);
+  });
+
+  // таблицы
+  document.querySelectorAll('tr').forEach(tr=>{
+    const c = tr.querySelector('.tcell[data-slot]');
+    if(!c) return;
+    const ref = c.dataset.slot.split('/')[0];
+    const p = PRICES[ref];
+    NAMES[ref] = tr.children[1].childNodes[0].textContent.trim();
+    const td = document.createElement('td');
+    td.className = 'tprice';
+    if(p){
+      td.innerHTML = (p.g!=null?'<span class="pg">'+fmt(p.g)+'</span>':'') +
+                     (p.o!=null?'<span class="po">'+fmt(p.o)+'</span>':'');
+      td.style.cursor='pointer'; td.title='Добавить в смету';
+      td.onclick = ()=>addItem(ref);
+    } else td.innerHTML = '<span style="color:#c3bcab">—</span>';
+    tr.appendChild(td);
+  });
+  document.querySelectorAll('thead tr').forEach(tr=>{
+    const th = document.createElement('th'); th.textContent='Цена'; tr.appendChild(th);
+  });
+
+  // смета
+  const est = document.getElementById('est'), body = document.getElementById('estBody');
+  document.getElementById('estToggle').onclick = ()=>est.classList.add('open');
+  document.getElementById('estClose').onclick = ()=>est.classList.remove('open');
+  document.getElementById('estClear').onclick = ()=>{ for(const k in CART) delete CART[k]; render(); };
+
+  function addItem(ref){ CART[ref] = (CART[ref]||0) + 1; est.classList.add('open'); render(); }
+
+  function render(){
+    const keys = Object.keys(CART);
+    document.getElementById('estN').textContent = keys.reduce((a,k)=>a+CART[k],0);
+    let g=0, o=0;
+    body.innerHTML = keys.length ? '' : '<div style="color:#9a9384;padding:12px 0">Пусто</div>';
+    keys.forEach(ref=>{
+      const p = PRICES[ref], q = CART[ref];
+      if(p.g!=null) g += p.g*q;
+      o += (p.o!=null ? p.o : (p.g!=null?p.g:0))*q;
+      const d = document.createElement('div');
+      d.className = 'eline';
+      d.innerHTML = '<div><div class="en">'+ref+'</div><div class="em">'+
+        (NAMES[ref]||'')+'</div></div><div>'+
+        '<button class="qbtn" data-a="-">−</button> '+q+' <button class="qbtn" data-a="+">+</button></div>'+
+        '<div>'+fmt(p.g!=null?p.g*q:null)+'</div>';
+      d.querySelectorAll('.qbtn').forEach(btn=>btn.onclick=()=>{
+        CART[ref] += btn.dataset.a==='+' ? 1 : -1;
+        if(CART[ref]<=0) delete CART[ref];
+        render();
+      });
+      body.appendChild(d);
+    });
+    document.getElementById('totG').textContent = fmt(g);
+    document.getElementById('totO').textContent = fmt(o);
+  }
+
+  document.getElementById('estCopy').onclick = ()=>{
+    let t = 'Смета — Rolex cal. 2230/2235\n\n', g=0, o=0;
+    Object.keys(CART).forEach(ref=>{
+      const p=PRICES[ref], q=CART[ref];
+      if(p.g!=null) g+=p.g*q;
+      o += (p.o!=null?p.o:(p.g!=null?p.g:0))*q;
+      t += ref+'  '+(NAMES[ref]||'')+'  ×'+q+'  '+fmt(p.g!=null?p.g*q:null)+'\n';
+    });
+    t += '\nИтого аналоги: '+fmt(g)+'\nИтого оригинал: '+fmt(o)+
+         '\n\nЦены evergreenparts.de, без НДС и доставки.';
+    navigator.clipboard.writeText(t).then(()=>{
+      const b=document.getElementById('estCopy'); const old=b.textContent;
+      b.textContent='Скопировано'; setTimeout(()=>b.textContent=old,1400);
+    });
+  };
+  render();
 })();
 </script>
+<button id="estToggle">Смета · <span id="estN">0</span></button>
+<div id="est">
+  <h4><span>Смета ремонта</span><button id="estClose">×</button></h4>
+  <div id="estBody"></div>
+  <div id="estFoot">
+    <div class="tot"><span>Аналоги</span><span id="totG">0,00 €</span></div>
+    <div class="tot"><span>Оригинал</span><span id="totO">0,00 €</span></div>
+    <button id="estCopy">Скопировать смету</button>
+    <button id="estClear">Очистить</button>
+  </div>
+</div>
 </body>
 </html>
